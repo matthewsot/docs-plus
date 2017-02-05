@@ -1,4 +1,4 @@
-var keyboardDefaults = {
+docs.keyboardDefaults = {
     hasExtraSpace: false,
 
     isSelectingName: false,
@@ -16,7 +16,7 @@ var keyboardDefaults = {
     selectedText: null
 };
 
-var keyboard = {
+docs.keyboard = {
     get currNameText() {
         return this._currNameText;
     },
@@ -36,18 +36,18 @@ var keyboard = {
     },
 };
 
-keyboard.insertText = function (text) {
+docs.keyboard.insertText = function (text) {
     if (!keyboard.selectedText) {
         docs.insertText(text);
     }
 };
-keyboard.backspace = function (count) {
+docs.keyboard.backspace = function (count) {
     if (!keyboard.selectedText) {
         docs.backspace(count);
     }
 };
 
-keyboard.reset = function (props) {
+docs.keyboard.reset = function (props) {
     for (var prop in keyboardDefaults) {
         if (typeof props === "undefined" || props.indexOf(prop) !== -1) {
             keyboard[prop] = keyboardDefaults[prop];
@@ -55,7 +55,7 @@ keyboard.reset = function (props) {
     }
 };
 
-keyboard.createInput = function () {
+docs.keyboard.createInput = function () {
     if ($("#action-inline-input").length <= 0) {
         $("body").append($("<div></div>", { "id": "action-inline-input" }));
         var offset = docs.getSelectionEl().offset();
@@ -63,14 +63,14 @@ keyboard.createInput = function () {
     }
 };
 
-keyboard.setInputText = function (text) {
+docs.keyboard.setInputText = function (text) {
     if (keyboard.selectedText !== null) {
         keyboard.createInput();
         $("#action-inline-input").text(text);
     }
 };
 
-keyboard.detectFraction = function (text) {
+docs.keyboard.detectFraction = function (text) {
     if (text.indexOf("/") === -1) {
         return false;
     }
@@ -96,13 +96,13 @@ keyboard.detectFraction = function (text) {
     }
 };
 
-keyboard.leaveTag = function (name, date, id) {
+docs.keyboard.leaveTag = function (name, date, id) {
     if (!utils.getStorageItem("action-leave-tags", false, true)) {
         return;
     }
     
-    startBlockingMouse();
-    startBlockingKeyboard();
+    docs.keyboard.startBlockingMouse();
+    docs.keyboard.startBlockingKeyboard();
     
     var shortName = "";
     var splitName = name.split(' ');
@@ -141,8 +141,8 @@ keyboard.leaveTag = function (name, date, id) {
                         
                         //TODO: return to original color
                         docs.setColor(docs.colors["black"]);
-                        stopBlockingMouse();
-                        stopBlockingKeyboard();
+                        docs.keyboard.stopBlockingMouse();
+                        docs.keyboard.stopBlockingKeyboard();
                     }, 100);
                 }, 100);
             }, 100);
@@ -154,29 +154,27 @@ keyboard.leaveTag = function (name, date, id) {
             
             //TODO: return to original color
             docs.setColor(docs.colors["black"]);
-            stopBlockingMouse();
-            stopBlockingKeyboard();
+            docs.keyboard.stopBlockingMouse();
+            docs.keyboard.stopBlockingKeyboard();
         }
     }, 100);
 };
 
-keyboard.reset();
+docs.keyboard.reset();
 
-var isExpectingClick = false;
-
-function startBlockingMouse() {
+docs.keyboard.startBlockingMouse() {
     $(".kix-appview-editor").on("mousedown click mouseup mousemove mouseover", utils.stopEvent);
 
     $(".kix-appview-editor").children().on("mousedown click mouseup mousemove mouseover", utils.stopEvent);
 
     $("#attendees-dropdown, #action-button").on("mousedown", keyboard.escape);
 }
-function stopBlockingMouse() {
+docs.keyboard.stopBlockingMouse() {
     $(".kix-appview-editor").off("mousedown click mouseup mousemove mouseover").children().off("mousedown click mouseup mousemove mouseover");
     $("#attendees-dropdown, #action-button").off("mousedown", keyboard.escape);
 }
 
-function handleKeyboard(e) {
+docs.keyboard.handleKeyboard(e) {
     if (meeting === null) return;
 
     if (typeof e.key === "undefined") {
@@ -188,10 +186,10 @@ function handleKeyboard(e) {
     }
 }
 function startBlockingKeyboard() {
-    $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").on("keydown", handleKeyboard);
+    $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").on("keydown", docs.keyboard.handleKeyboard);
 }
 function stopBlockingKeyboard() {
-    $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").off("keydown", handleKeyboard);
+    $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").off("keydown", docs.keyboard.handleKeyboard);
 }
 
 function capitalizeName(name) {
@@ -271,13 +269,13 @@ function enterSelected() {
     keyboard.reset();
 
     $("#action-inline-selector, #action-inline-input").remove();
-    stopBlockingMouse();
+    docs.keyboard.stopBlockingMouse();
 }
 
 keyboard.escape = function () {
     keyboard.reset();
     $("#action-inline-selector, #action-inline-input").remove();
-    stopBlockingMouse();
+    docs.keyboard.stopBlockingMouse();
 }
 
 $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").keydown(function (e) {
@@ -330,7 +328,7 @@ $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").
         }
 
         keyboard.isSelectingName = true;
-        startBlockingMouse();
+        docs.keyboard.startBlockingMouse();
         keyboard.currNameText = "";
 
         $("#action-inline-selector").remove();
@@ -380,7 +378,7 @@ $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").
         if (keyboard.isSelectingName && keyboard.currNameText == "") {
             keyboard.reset();
             $("#action-inline-selector, #action-inline-input").remove();
-            stopBlockingMouse();
+            docs.keyboard.stopBlockingMouse();
             return;
         } else if (keyboard.isSelectingTime && keyboard.currTimeText == "") {
             $("#action-inline-selector").show();
@@ -549,7 +547,7 @@ $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").
                 
                 keyboard.reset();
                 $("#action-inline-selector, #action-inline-input").remove();
-                stopBlockingMouse();
+                docs.keyboard.stopBlockingMouse();
                 break;
             default:
                 if (e.key.length === 1) {

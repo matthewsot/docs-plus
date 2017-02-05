@@ -1,8 +1,9 @@
-var docs = docs || {
+var docs = {
     id: window.location.href.split("/document/d/")[1].split("/")[0],
     get name() {
         return $(".docs-title-input-label-inner").text().trim();
-    }
+    },
+    platform: "chrome" //chrome, firefox, userscript
 };
 
 docs.getSelectionEl = function () {
@@ -89,7 +90,7 @@ docs.insertText = function (toInsert) {
         }
     }
     
-    if (actionPluginPlatform !== "userscript") {
+    if (docs.platform !== "userscript") {
         docs.runWithCreateKeyboard(doInsertText.toString(), "doInsertText", "\"" + toInsert + "\"");
     } else {
         doInsertText(toInsert);
@@ -202,7 +203,7 @@ docs.toggleSubscript = function () {
         el.dispatchEvent(ctrlPress);
     }
     
-    if (actionPluginPlatform !== "userscript") {
+    if (docs.platform !== "userscript") {
         docs.runWithCreateKeyboard(_doToggleSubscript.toString(), "_doToggleSubscript", "");
         return;
     } else {
