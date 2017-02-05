@@ -129,7 +129,7 @@ docs.keyboard.stopBlockingMouse();
 docs.keyboard.stopBlockingKeyboard();
 ```
 
-This can be useful if when using in-text selectors that need to appear under the user's cursor, and you do not want to re-place those selectors when the user navigates to a different part of the document.
+This can be useful when using in-text selectors that need to appear under the user's cursor, and you do not want to re-place those selectors when the user navigates to a different part of the document.
 
 ### Handling mouse events
 There are currently no helpers for mouse events in Docs+, but you should hook into ``mouseup`` on ``.kix-appview-editor`` if you want to handle them. See the [speechless demo](https://github.com/matthewsot/speechless) for an example of this:
