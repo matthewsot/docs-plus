@@ -1,3 +1,10 @@
+var docs = docs || {
+    id: window.location.href.split("/document/d/")[1].split("/")[0],
+    get name() {
+        return $(".docs-title-input-label-inner").text().trim();
+    },
+    platform: "chrome" //chrome, firefox, userscript
+};
 docs.utils = {};
 
 docs.utils.observe = function (el, config, callback, observeOnce) {

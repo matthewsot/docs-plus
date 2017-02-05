@@ -1,4 +1,4 @@
-var docs = {
+var docs = docs || { //TODO: cleanup the duplication here + in utils.js
     id: window.location.href.split("/document/d/")[1].split("/")[0],
     get name() {
         return $(".docs-title-input-label-inner").text().trim();
