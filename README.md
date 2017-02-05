@@ -1,19 +1,25 @@
 # docs-plus
 A library for rich Google Docs extensions that can integrate with its editor.
 
+[Skip to the Quickstart](#Quickstart)
+
 # Screenshots
 Docs+ allows you to interact with the user's text in the Google Docs Kix editor. A few screenshots of extensions using Docs+:
 
 Rich interactions with the editor:
+
 ![Rich interactions with the editor](screenshots/actionselector.jpg)
 
 Adding custom buttons to Docs:
+
 ![Adding custom buttons to Docs](screenshots/actionbutton.jpg)
 
 Using the user's selected text:
+
 ![Get the user's selected text](screenshots/speechless.jpg)
 
 Interacting with Docs menus:
+
 ![Interact with Docs menus](screenshots/rightclick.jpg)
 
 # Quickstart
