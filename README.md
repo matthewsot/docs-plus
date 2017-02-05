@@ -35,7 +35,7 @@ Interacting with Docs menus:
 ![Interact with Docs menus](screenshots/rightclick.jpg)
 
 # Quickstart
-First, include jQuery, docs.js, and utils.js in your project (ideally in that order). Then, start using the Docs+ library!
+First, include ``jQuery``, ``utils.js``, and ``docs.js`` in your project (ideally in that order). If you'd like to use the real-time editor helper functions, also include ``editor-input.js``. Then, start using the Docs+ library!
 
 If you are using Docs+ as a Greasemonkey userscript, you may run into problems using text insertion functions. If so, please change the ``docs.platform`` value to ``"userscript"`` to solve these issues.
 
