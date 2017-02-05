@@ -1,4 +1,4 @@
-var docs = {
+var docs = docs || {
     id: window.location.href.split("/document/d/")[1].split("/")[0],
     get name() {
         return $(".docs-title-input-label-inner").text().trim();
@@ -96,7 +96,7 @@ docs.insertText = function (toInsert) {
     }
 };
 
-var lastBackspace = Date.now();
+docs.lastBackspace = Date.now();
 docs.backspace = function (counts) {
     function doBackspace(counts) {
         var keyboardType = "keypress";
@@ -122,7 +122,7 @@ docs.backspace = function (counts) {
     
     if (typeof counts === "undefined") counts = 1;
 
-    var secondsSinceLastBackspace = (Date.now() - lastBackspace) / 1000;
+    var secondsSinceLastBackspace = (Date.now() - docs.lastBackspace) / 1000;
 
     if (counts === 1 && secondsSinceLastBackspace < 1) return; //just trust me here
 
