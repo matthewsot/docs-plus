@@ -40,7 +40,7 @@ docs.getSelectionWithObserver = function (callback, defaultToParagraph, getRaw) 
         return;
     }
 
-    utils.observe($(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]")[0], {
+    docs.utils.observe($(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]")[0], {
         childList: true
     }, function(mutations) {
         callback(getRaw ? mutations[0].target : $(mutations[0].target).text().trim());
@@ -59,7 +59,7 @@ docs.runWithCreateKeyboard = function (strToRun, funcName, params) {
 
     toRun += funcName + '(' + params + ')';
 
-    utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
+    docs.utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
 };
 
 docs.insertText = function (toInsert) {
@@ -75,7 +75,7 @@ docs.insertText = function (toInsert) {
                 key = specials[key];
             }
 
-            var e = utils.createKeyboardEvent("keypress", {
+            var e = docs.utils.createKeyboardEvent("keypress", {
                 "key": key,
                 "charCode": toInsert.charCodeAt(i),
                 "keyCode": null,
@@ -103,7 +103,7 @@ docs.backspace = function (counts) {
         var keyboardType = "keypress";
         if (navigator.vendor.toLowerCase().indexOf("google") !== -1) { keyboardType = "keydown"; }
     
-        var e = utils.createKeyboardEvent(keyboardType, {
+        var e = docs.utils.createKeyboardEvent(keyboardType, {
             "key": "Backspace",
             "charCode": 8,
             "keyCode": 8,
@@ -138,7 +138,7 @@ docs.backspace = function (counts) {
     toRun += 'doBackspace(' + counts + ')';
 
     setTimeout(function () {
-        utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
+        docs.utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
     }, (secondsTimeout * 1000));
     return;
 };
@@ -185,14 +185,14 @@ docs.toggleSubscript = function () {
             "ctrlKey": true
         };
 
-        var ctrlDown = utils.createKeyboardEvent("keydown", ctrl);
+        var ctrlDown = docs.utils.createKeyboardEvent("keydown", ctrl);
 
-        var commaDown = utils.createKeyboardEvent("keydown", comma);
-        var commaUp = utils.createKeyboardEvent("keyup", comma);
-        var commaPress = utils.createKeyboardEvent("keypress", comma);
+        var commaDown = docs.utils.createKeyboardEvent("keydown", comma);
+        var commaUp = docs.utils.createKeyboardEvent("keyup", comma);
+        var commaPress = docs.utils.createKeyboardEvent("keypress", comma);
 
-        var ctrlUp = utils.createKeyboardEvent("keydown", ctrl);
-        var ctrlPress = utils.createKeyboardEvent("keypress", ctrl);
+        var ctrlUp = docs.utils.createKeyboardEvent("keydown", ctrl);
+        var ctrlPress = docs.utils.createKeyboardEvent("keypress", ctrl);
 
         var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]");
         el.dispatchEvent(ctrlDown);
@@ -215,7 +215,7 @@ docs.getCurrentParagraphText = function(callback) {
     //Set up an observer to observe all the paragraphs
     var calledAlready = false;
 
-    var observer = utils.observe($(".kix-paginateddocumentplugin")[0], {
+    var observer = docs.utils.observe($(".kix-paginateddocumentplugin")[0], {
         childList: true,
         subtree: true
     }, function(mutations) {

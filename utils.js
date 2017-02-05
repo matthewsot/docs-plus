@@ -23,12 +23,7 @@ docs.utils.observe = function (el, config, callback, observeOnce) {
     return observer;
 };
 
-utils.stopEvent = function (e) {
-    utils.recipe(e, ["preventDefault", "stopPropagation"]);
-};
-
-
-utils.keyFromKeyCode = function (shifted, keyCode) {
+docs.utils.keyFromKeyCode = function (shifted, keyCode) {
     var specialKeys = { 191: "/", 27: "Escape", 16: "Shift", 17: "Control", 18: "Alt", 8: "Backspace", 32: " ", 13: "Enter", 9: "Tab", 37: "ArrowLeft", 38: "ArrowUp", 39: "ArrowRight", 40: "ArrowDown" };
     var shiftedSpecialKeys = { 191: "?" };
     if (typeof specialKeys[keyCode] !== "undefined") {
@@ -50,7 +45,7 @@ utils.keyFromKeyCode = function (shifted, keyCode) {
     }
 };
 
-utils.createKeyboardEvent = function (type, info) {
+docs.utils.createKeyboardEvent = function (type, info) {
     var e = new KeyboardEvent(type, info);
     if(e.keyCode == 0) {
         /* http://jsbin.com/awenaq/3/edit?js,output */
@@ -69,7 +64,7 @@ utils.createKeyboardEvent = function (type, info) {
     return e;
 }
 
-utils.runInPage = function (script) {
+docs.utils.runInPage = function (script) {
     if (actionPluginPlatform === "firefox") {
         var th = document.body;
         var s = document.createElement('script');
@@ -82,7 +77,7 @@ utils.runInPage = function (script) {
 };
 
 //Thanks! https://stackoverflow.com/questions/1740700/how-to-get-hex-color-value-rather-than-rgb-value
-utils.rgb2hex = function(rgb) {
+docs.utils.rgb2hex = function(rgb) {
     if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
 
     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
