@@ -4,7 +4,7 @@ A library for rich Google Docs extensions that can integrate with its editor.
 [Skip to the Quickstart](#quickstart)
 
 # History
-Docs+ was originally built for [Action](https://meetaction.com/), an add-on that simplifies action item tracking during Google Docs meetings, about two years ago. Development on Action has sort of died down into a long-term support mode now, and I realized that (as far as I can tell) there isn't another good Docs-integration library, so I figured someone else might find use in this part of the Action code.
+Docs+ was originally built for [Action](https://meetaction.com/), an add-on that simplifies action item tracking during Google Docs meetings, about two years ago with [@adhivd](https://github.com/adhivd) and [@wwilliamsshan](https://github.com/wwilliamsshan). Development on Action has sort of died down into a long-term support mode now, and I realized that (as far as I can tell) there isn't another good Docs-integration library, so I figured someone else might find use in this part of the Action code.
 
 # License
 All code in this repository (other than the files in the ``reference`` folder) is licensed under the MIT license.
