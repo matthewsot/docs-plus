@@ -53,8 +53,7 @@ docs.getSelectionWithObserver = function (callback, defaultToParagraph, getRaw) 
 docs.getSelection = docs.getSelectionWithObserver;
 
 docs.runWithCreateKeyboard = function (strToRun, funcName, params) {
-    var toRun = "var utils = {};utils.createKeyboardEvent = " + utils.createKeyboardEvent.toString() + ";";
-    var toRun = "var utils = {};utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
+    var toRun = "var docs = {'utils': {}};docs.utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
 
     toRun += strToRun;
 
@@ -64,10 +63,6 @@ docs.runWithCreateKeyboard = function (strToRun, funcName, params) {
 };
 
 docs.insertText = function (toInsert) {
-    /*function coolerDoInsert(toInsert) {
-        var e = new ClipboardEvent('paste', { dataType: 'text/plain', data: toInsert });
-        document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]").dispatchEvent(e);
-    }*/
     function doInsertText(toInsert) {
         for (var i = 0; i < toInsert.length; i++) {
             var key = toInsert[i];
@@ -132,7 +127,7 @@ docs.backspace = function (counts) {
     var secondsTimeout = secondsSinceLastBackspace < 1 ? (1 - secondsSinceLastBackspace) : 0;
 
 
-    var toRun = "var utils = {};utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
+    var toRun = "var docs = {'utils': {}};docs.utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
 
     toRun += doBackspace.toString();
 
@@ -161,7 +156,7 @@ docs.setColor = function (colorSelector) {
     el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: true }));
 };
 
-docs.toggleSubscript = function () {
+docs.ctrlKeyShortcut = function (secondKey) {
     function _doToggleSubscript() {
         var ctrl = {
             "key": "Control",
@@ -174,42 +169,64 @@ docs.toggleSubscript = function () {
             "which": 17,
             "ctrlKey": true
         };
-        var comma = {
-            "key": ",",
-            "charCode": 0,
-            "keyCode": 188,
-            "bubbles": true,
-            "cancelable": true,
-            "code": 188,
-            "pageY": 7,
-            "which": 188,
-            "ctrlKey": true
-        };
 
         var ctrlDown = docs.utils.createKeyboardEvent("keydown", ctrl);
 
-        var commaDown = docs.utils.createKeyboardEvent("keydown", comma);
-        var commaUp = docs.utils.createKeyboardEvent("keyup", comma);
-        var commaPress = docs.utils.createKeyboardEvent("keypress", comma);
+        var secondDown = docs.utils.createKeyboardEvent("keydown", secondKey);
+        var secondUp = docs.utils.createKeyboardEvent("keyup", secondKey);
+        var secondPress = docs.utils.createKeyboardEvent("keypress", secondKey);
 
         var ctrlUp = docs.utils.createKeyboardEvent("keydown", ctrl);
         var ctrlPress = docs.utils.createKeyboardEvent("keypress", ctrl);
 
         var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]");
         el.dispatchEvent(ctrlDown);
-        el.dispatchEvent(commaDown);
-        el.dispatchEvent(commaUp);
-        el.dispatchEvent(commaPress);
+        el.dispatchEvent(secondDown);
+        el.dispatchEvent(secondUp);
+        el.dispatchEvent(secondPress);
         el.dispatchEvent(ctrlUp);
         el.dispatchEvent(ctrlPress);
     }
     
     if (docs.platform !== "userscript") {
-        docs.runWithCreateKeyboard(_doToggleSubscript.toString(), "_doToggleSubscript", "");
+        function escape_quotes(str) {
+            //TODO: something that's not practically guaranteed to break here
+            return str.replace(/\\/g, "\\\\").replace(/\"/g, "\\\"")
+        }
+        docs.runWithCreateKeyboard("secondKey=JSON.parse(\"" + escape_quotes(JSON.stringify(secondKey)) + "\");" + _doToggleSubscript.toString(), "_doToggleSubscript", "");
         return;
     } else {
         _doToggleSubscript();
     }
+};
+
+docs.toggleSubscript = function () {
+    var comma = {
+        "key": ",",
+        "charCode": 0,
+        "keyCode": 188,
+        "bubbles": true,
+        "cancelable": true,
+        "code": 188,
+        "pageY": 7,
+        "which": 188,
+        "ctrlKey": true
+    };
+    docs.ctrlKeyShortcut(comma);
+};
+docs.toggleBold = function () {
+    var b = {
+        "key": "b",
+        "charCode": 0,
+        "keyCode": 66,
+        "bubbles": true,
+        "cancelable": true,
+        "code": 66,
+        "pageY": 7,
+        "which": 66,
+        "ctrlKey": true
+    };
+    docs.ctrlKeyShortcut(b);
 };
 
 docs.getCurrentParagraphText = function(callback) {
