@@ -65,15 +65,11 @@ docs.utils.createKeyboardEvent = function (type, info) {
 }
 
 docs.utils.runInPage = function (script) {
-    if (actionPluginPlatform === "firefox") {
-        var th = document.body;
-        var s = document.createElement('script');
-        s.setAttribute('type', 'text/javascript');
-        s.innerHTML = script;
-        th.appendChild(s);
-        return;
-    }
-    window.location = "javascript:" + script;
+    var th = document.body;
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.innerHTML = script;
+    th.appendChild(s);
 };
 
 //Thanks! https://stackoverflow.com/questions/1740700/how-to-get-hex-color-value-rather-than-rgb-value
