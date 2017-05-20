@@ -54,6 +54,7 @@ docs.getSelection = docs.getSelectionWithObserver;
 
 docs.runWithCreateKeyboard = function (strToRun, funcName, params) {
     var toRun = "var utils = {};utils.createKeyboardEvent = " + utils.createKeyboardEvent.toString() + ";";
+    var toRun = "var utils = {};utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
 
     toRun += strToRun;
 
@@ -131,7 +132,7 @@ docs.backspace = function (counts) {
     var secondsTimeout = secondsSinceLastBackspace < 1 ? (1 - secondsSinceLastBackspace) : 0;
 
 
-    var toRun = "var utils = {};utils.createKeyboardEvent = " + utils.createKeyboardEvent.toString() + ";";
+    var toRun = "var utils = {};utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
 
     toRun += doBackspace.toString();
 
