@@ -1,9 +1,9 @@
 docs.keyboard = {};
 
 docs.keyboard.startBlockingMouse = function () {
-    $(".kix-appview-editor").on("mousedown click mouseup mousemove mouseover", utils.stopEvent);
+    $(".kix-appview-editor").on("mousedown click mouseup mousemove mouseover", docs.utils.stopEvent);
 
-    $(".kix-appview-editor").children().on("mousedown click mouseup mousemove mouseover", utils.stopEvent);
+    $(".kix-appview-editor").children().on("mousedown click mouseup mousemove mouseover", docs.utils.stopEvent);
 
     $("#attendees-dropdown, #action-button").on("mousedown", keyboard.escape);
 };
@@ -23,7 +23,7 @@ $(".docs-texteventtarget-iframe").contents().find("[contenteditable=\"true\"]").
     if (!docs.keyboard.handleKeydown) return;
 
     if (typeof e.key === "undefined") {
-        e.key = utils.keyFromKeyCode(e.shiftKey, e.keyCode);
+        e.key = docs.utils.keyFromKeyCode(e.shiftKey, e.keyCode);
     }
     docs.keyboard.handleKeydown(e);
 });
