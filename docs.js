@@ -1,4 +1,4 @@
-var docs = docs || { //TODO: cleanup the duplication here + in utils.js
+var docs = docs || { // TODO: cleanup the duplication here + in utils.js
     id: window.location.href.split("/document/d/")[1].split("/")[0],
     get name() {
         return $(".docs-title-input-label-inner").text().trim();
@@ -52,97 +52,10 @@ docs.getSelectionWithObserver = function (callback, defaultToParagraph, getRaw) 
 };
 docs.getSelection = docs.getSelectionWithObserver;
 
-docs.runWithCreateKeyboard = function (strToRun, funcName, params) {
-    var toRun = "var docs = {'utils': {}};docs.utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
-
-    toRun += strToRun;
-
-    toRun += funcName + '(' + params + ')';
-
-    docs.utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
-};
-
-docs.insertText = function (toInsert) {
-    function doInsertText(toInsert) {
-        for (var i = 0; i < toInsert.length; i++) {
-            var key = toInsert[i];
-            var specials = { " ": " ", "\t": "Tab" };
-            if (specials[key] !== "undefined") {
-                key = specials[key];
-            }
-
-            var e = docs.utils.createKeyboardEvent("keypress", {
-                "key": key,
-                "charCode": toInsert.charCodeAt(i),
-                "keyCode": null,
-                "bubbles": true,
-                "cancelable": true,
-                "code": key,
-                "pageY": 7,
-                "which": toInsert.charCodeAt(i)
-            });
-
-            document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]").dispatchEvent(e);
-        }
-    }
-    
-    if (docs.platform !== "userscript") {
-        docs.runWithCreateKeyboard(doInsertText.toString(), "doInsertText", "\"" + toInsert + "\"");
-    } else {
-        doInsertText(toInsert);
-    }
-};
-
-docs.lastBackspace = Date.now();
-docs.backspace = function (counts) {
-    function doBackspace(counts) {
-        var keyboardType = "keypress";
-        if (navigator.vendor.toLowerCase().indexOf("google") !== -1) { keyboardType = "keydown"; }
-    
-        var e = docs.utils.createKeyboardEvent(keyboardType, {
-            "key": "Backspace",
-            "charCode": 8,
-            "keyCode": 8,
-            "bubbles": true,
-            "cancelable": true,
-            "code": "Backspace",
-            "pageY": 7,
-            "which": 8
-        });
-    
-        if (typeof counts === "undefined") counts = 1;
-    
-        for (var i = 0; i < counts; i++) {
-            document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]").dispatchEvent(e);
-        }
-    }
-    
-    if (typeof counts === "undefined") counts = 1;
-
-    var secondsSinceLastBackspace = (Date.now() - docs.lastBackspace) / 1000;
-
-    if (counts === 1 && secondsSinceLastBackspace < 1) return; //just trust me here
-
-    lastBackspace = Date.now();
-    var secondsTimeout = secondsSinceLastBackspace < 1 ? (1 - secondsSinceLastBackspace) : 0;
-
-
-    var toRun = "var docs = {'utils': {}};docs.utils.createKeyboardEvent = " + docs.utils.createKeyboardEvent.toString() + ";";
-
-    toRun += doBackspace.toString();
-
-    toRun += 'doBackspace(' + counts + ')';
-
-    setTimeout(function () {
-        docs.utils.runInPage(toRun.replace(/\r?\n|\r/g, " "));
-    }, (secondsTimeout * 1000));
-    return;
-};
-
 docs.colors = {
-    "gray": "#jfk-palette-cell-5 > div:nth-child(1)",
-    "black": "#jfk-palette-cell-0 > div:nth-child(1)",
-    "white": "#jfk-palette-cell-9 > div:nth-child(1)"
+    "gray": "#docs-material-colorpalette-cell-5 > div:nth-child(1)",
+    "black": "#docs-material-colorpalette-cell-0 > div:nth-child(1)",
+    "white": "#docs-material-colorpalette-cell-9 > div:nth-child(1)"
 };
 
 docs.setColor = function (colorSelector) {
@@ -200,33 +113,26 @@ docs.ctrlKeyShortcut = function (secondKey) {
     }
 };
 
+docs.toggleSuperscript = function () {
+    var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentDocument;
+    var data = {"keyCode": 190, "ctrlKey": true};
+    key_event = new KeyboardEvent("keydown", data);
+    key_event.docs_plus_ = true;
+    el.dispatchEvent(key_event);
+};
 docs.toggleSubscript = function () {
-    var comma = {
-        "key": ",",
-        "charCode": 0,
-        "keyCode": 188,
-        "bubbles": true,
-        "cancelable": true,
-        "code": 188,
-        "pageY": 7,
-        "which": 188,
-        "ctrlKey": true
-    };
-    docs.ctrlKeyShortcut(comma);
+    var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentDocument;
+    var data = {"keyCode": 188, "ctrlKey": true};
+    key_event = new KeyboardEvent("keydown", data);
+    key_event.docs_plus_ = true;
+    el.dispatchEvent(key_event);
 };
 docs.toggleBold = function () {
-    var b = {
-        "key": "b",
-        "charCode": 0,
-        "keyCode": 66,
-        "bubbles": true,
-        "cancelable": true,
-        "code": 66,
-        "pageY": 7,
-        "which": 66,
-        "ctrlKey": true
-    };
-    docs.ctrlKeyShortcut(b);
+    var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentDocument;
+    var data = {"keyCode": 66, "ctrlKey": true};
+    key_event = new KeyboardEvent("keydown", data);
+    key_event.docs_plus_ = true;
+    el.dispatchEvent(key_event);
 };
 
 docs.getCurrentParagraphText = function(callback) {
@@ -266,7 +172,7 @@ docs.getCurrentParagraphText = function(callback) {
         });
     });
 
-    docs.insertText(" ");
+    docs.keyboard.typeLetters(" ");
 };
 
 docs.getUserCursor = function () {
@@ -288,3 +194,11 @@ docs.getUserCursor = function () {
     console.log("Couldn't locate the cursor!");
     return $(".kix-cursor").first();
 };
+
+docs.setCursorWidth = function(width) {
+    docs.getUserCursor().find(".kix-cursor-caret").css("border-width", width);
+};
+
+var el = document.getElementsByClassName("docs-texteventtarget-iframe")[0].contentWindow.document.querySelector("[contenteditable=\"true\"]");
+ev = new KeyboardEvent("keydown", {"code": 37})
+el.dispatchEvent(ev);

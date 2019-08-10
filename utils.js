@@ -26,8 +26,8 @@ docs.utils.observe = function (el, config, callback, observeOnce) {
 docs.utils.keyFromKeyCode = function (shifted, keyCode) {
     var specialKeys = { 191: "/", 27: "Escape", 16: "Shift", 17: "Control", 18: "Alt", 8: "Backspace", 32: " ", 13: "Enter", 9: "Tab", 37: "ArrowLeft", 38: "ArrowUp", 39: "ArrowRight", 40: "ArrowDown" };
     var shiftedSpecialKeys = { 191: "?" };
-    if (typeof specialKeys[keyCode] !== "undefined") {
-        if (shifted && typeof shiftedSpecialKeys[keyCode] !== "undefined") {
+    if (keyCode in specialKeys) {
+        if (shifted && keyCode in shiftedSpecialKeys) {
             return shiftedSpecialKeys[keyCode];
         }
         return specialKeys[keyCode];
@@ -36,8 +36,7 @@ docs.utils.keyFromKeyCode = function (shifted, keyCode) {
         if(!shifted) return c.toLowerCase();
 
         var shifts = { "`": "~", "1": "!", "2": "@", "3": "#", "4": "$", "5": "%", "6": "^", "7": "&", "8": "*", "9": "(", "0": ")", "-": "_", "=": "+" };
-        var foundShift = shifts[c];
-        if (typeof foundShift === "undefined") {
+        if (!(c in shifts)) {
             return c.toUpperCase();
         } else {
             return shifts[c];
@@ -45,31 +44,15 @@ docs.utils.keyFromKeyCode = function (shifted, keyCode) {
     }
 };
 
-docs.utils.createKeyboardEvent = function (type, info) {
-    var e = new KeyboardEvent(type, info);
-    if(e.keyCode == 0) {
-        /* http://jsbin.com/awenaq/3/edit?js,output */
-        e = document.createEventObject ?
-            document.createEventObject() : document.createEvent("Events");
-      
-        if(e.initEvent){
-          e.initEvent(type, true, true);
-        }
-
-        for (var prop in info) {
-            e[prop] = info[prop];
-        }
+docs.utils.codeFromKey = function(key) {
+    var specialKeys = { "/": 191, "Escape": 27, "Shift": 16,
+        "Control": 17, "Alt": 18, "Backspace": 8, " ": 32, "Enter": 13,
+        "Tab": 9, "ArrowLeft": 37, "ArrowUp": 38, "ArrowRight": 39, "ArrowDown": 40,
+    "Delete": 46 };
+    if (key in specialKeys) {
+        return specialKeys[key];
     }
-
-    return e;
-}
-
-docs.utils.runInPage = function (script) {
-    var th = document.body;
-    var s = document.createElement('script');
-    s.setAttribute('type', 'text/javascript');
-    s.innerHTML = script;
-    th.appendChild(s);
+    return key.charCodeAt(key);
 };
 
 //Thanks! https://stackoverflow.com/questions/1740700/how-to-get-hex-color-value-rather-than-rgb-value
