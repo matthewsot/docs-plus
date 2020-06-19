@@ -111,6 +111,15 @@ docs.pasteText = function (text) {
     el.dispatchEvent(paste);
 };
 
+/*********** MOUSE INTERACTION ***********/
+docs.pressButton = function (el) {
+    el.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: true }));
+};
+
 /*********** TEXT FORMATTING ***********/
 docs.colors = {
     "black": "#docs-material-colorpalette-cell-0 > div:nth-child(1)",
@@ -126,14 +135,10 @@ docs.setColor = function (color) {
         color = docs.colors[color];
     }
     var sel = $("#textColorButton > div:nth-child(1) > div:nth-child(1)")[0];
+    // It seems this is all Docs needs.
     sel.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
 
-    var el = $(color)[0];
-    el.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
-    el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
-    el.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
-    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: true }));
+    docs.pressButton($(color)[0]);
 };
 
 // Toggles whether inserted (selected) text is superscripted or not. Note that
@@ -154,6 +159,15 @@ docs.toggleSubscript = function () {
 // isBold() method.
 docs.toggleBold = function () {
     docs.pressKey(66, true, false);
+};
+
+/*********** MENU OPTIONS ***********/
+docs.undo = function () {
+    docs.pressButton($("[aria-label='Undo u']")[0]);
+};
+
+docs.redo = function () {
+    docs.pressButton($("[aria-label='Redo r']")[0]);
 };
 
 /*********** USER SELECTIONS ***********/

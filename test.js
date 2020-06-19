@@ -9,6 +9,15 @@ docs.keydown = async function (e) {
         e.preventDefault();
         e.stopPropagation();
 
+        docs.pressLetters("t");
+        docs.undo();
+
+        docs.pressLetters("T");
+        docs.undo();
+        docs.redo();
+        docs.pasteText("his line should start with only one 'T'.\n");
+        await sleep(500);
+
         docs.pressLetters("Heytypo");
         for (var i = 0; i < "typo".length; i++) {
             docs.backspace();
