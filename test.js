@@ -60,6 +60,10 @@ docs.keydown = async function (e) {
         docs.pasteText("Back to normal.\n");
         await sleep(500);
 
+        docs.insertLink("https://example.com/", "This should be a link to https://example.com/");
+        docs.pasteText("Back to normal.\n");
+        await sleep(500);
+
         docs.pasteText("A few tests require user input:\n" +
                        "1) Select something (or not) and press alt+s to " +
                        "check the selection methods.\n" +
