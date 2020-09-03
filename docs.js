@@ -161,6 +161,15 @@ docs.toggleBold = function () {
     docs.pressKey(66, true, false);
 };
 
+// Inserts a link with the given text.
+docs.insertLink = function (target, text) {
+    docs.pressButton($("[aria-label='Insert link (Ctrl+K)']")[0]);
+    $("[aria-label='Paste a link, or search']")[0].value = target;
+    $(".docs-link-insertlinkbubble-text.jfk-textinput.label-input-label")[0].value = text;
+    $("[aria-label='Paste a link, or search']")[0].dispatchEvent(new CustomEvent("input"));
+    docs.pressButton($(".docs-link-insertlinkbubble-buttonbar > div")[0]);
+};
+
 /*********** MENU OPTIONS ***********/
 docs.undo = function () {
     docs.pressButton($("[aria-label='Undo u']")[0]);
