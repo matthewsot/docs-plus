@@ -3,6 +3,11 @@ A library for rich Google Docs extensions that can integrate with its editor.
 
 [Skip to the Quickstart](#quickstart)
 
+# Update
+Apparently Google is [making significant changes to the Docs
+editor](https://workspaceupdates.googleblog.com/2021/05/Google-Docs-Canvas-Based-Rendering-Update.html),
+so this will likely stop working in the next few months.
+
 # History
 Docs+ was originally built for
 [Action](https://web.archive.org/web/20170521022925/https://meetaction.com/),
